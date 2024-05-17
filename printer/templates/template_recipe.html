@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang = 'es'>
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv="X-UA-Compatible" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../templates/style_recipe.css" type="text/css">
+</head>
+
+<body>
+  <div class="grid-container">
+    <div class="header">
+      <h1 class="fecha">Mérida, Yucatán a {{date}}</h1>
+      <h1 id="red_1">*Traer en su siguiente visita<br>
+        *Dudas: Resolver las próximas 24 horas.</h1>
+    </div>
+    <div class="patient-info">
+      <table class="table">
+        <tr>
+          <td id="bold">Paciente</td>
+          <td>{{patient}}</td>
+        </tr>
+        <tr>
+          <td id="bold">Familia</td>
+          <td>{{propietary}}</td>
+        </tr>
+        <tr>
+          <td id="bold">Peso</td>
+          <td>{{weight}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="diagnostic">
+      <h2>DX: {{dx}}</h2>
+    </div>
+    <div class="indications">
+      <p class="recipe-info">{{tx}}</p>  
+    </div>
+    <div class="next-visit">
+      <h3>Proxima visita:<br>
+      {{next_visit}} {{motive}} {{cost}}</h3>
+    </div>
+    <div class="signature">
+      MVZ EDUARDO A. TELLEZ RAMOS<br>Ced. Prof. 13518954
+    </div>
+    <div class="footer-container">
+      <footer class="footer">
+        <h3 id="red_2">NOTAS MIIS PEEK</h3>
+        <ul>
+          <li>Las citas control son vigentes por 7 días hábiles.</li> 
+          <li>A partir de la fecha indicada en la receta, pasados los 7 días se considera como una consulta general. Es importante agendar su cita.</li> 
+          <li>Horario de atención de 9:00 am a 7:30 pm.</li> 
+          <li>No contamos con servicio de emergencia por el momento.</li>
+        </ul>
+        </footer>
+    </div>
+    </body>
+  </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Arial";
+}
+body {
+    background-image: url("../elements/name_clinic.jpg");
+    background-size:contain;
+    background-repeat: no-repeat;
+    height: 27.94cm;
+    width: 21.59cm;
+}
+ul{
+    list-style-position: inside;
+}
+
+.grid-container{
+    display:grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 15% 6% 5% 6% 39% 4% 3% 10%;
+    grid-template-areas: ". . ."
+                         ". header ."
+                         ". patient-info ."
+                         ". diagnostic ."
+                         ". indications ."
+                         ". next-visit ."
+                         ". signature ."
+                         ". footer .";
+}
+
+.header{
+    grid-area: header;
+    #red_1{
+        text-align: center;
+        font-family: 'Arial';
+        font-weight: 10pt;
+        font-size:0.8rem;
+        color: red;
+    }
+  }
+  .fecha{
+    display: flex;
+    justify-content:end;
+    font-size: 9pt;
+    font-family: "Cambria";
+    font-style: italic;
+    font-weight: bold;
+  }
+  .patient-info{
+    grid-area: patient-info;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    .table{
+        width: 90%;
+        font-family: "Arial";
+        font-size: 10pt;
+        border-collapse: collapse;
+        #bold{
+            font-weight: bold;
+            width: 50%;
+        }
+        td{
+            border: 1px solid black;
+            text-align:justify;
+            text-indent: 7pt;            
+        }
+    }
+  }
+  .diagnostic{
+    grid-area: diagnostic;
+    font-size: smaller;
+    padding: 15px;
+    text-align: center;
+    font-size: 8pt;
+    font-weight: bold;
+  }
+  .indications{
+    grid-area: indications;
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    line-height: 11pt;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+  .next-visit{
+    grid-area: next-visit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-size: 9pt;
+    font-weight: bold;
+  }
+  .signature{
+    grid-area: signature;
+    display: flex;
+    align-items:center;
+    justify-content: right;
+    font-family: Cambria, sans-serif;
+    font-size: 9pt;
+    #ced{
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8pt;
+    }
+  }
+  .footer-container{
+    grid-area: footer;
+    height: 100%;
+    .footer{
+      font-family: Cambria, sans-serif;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 9pt;
+      text-align: left;
+      #red_2{
+        color: red;
+      }
+    }
+  }
+  
+  

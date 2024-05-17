@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang = 'es'>
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv="X-UA-Compatible" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../templates/style_consult_report.css" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <header class="principal-info">
+                <h2 id="title">ANAMNESIS ¡MOTIVO DE CONSULTA! #1</h2>
+                <h3 id="label">FECHA: {{date}}</h3>
+                <table class="type-consult">
+                    <tr class ="principal-row">
+                        <td class="consult">CONSULTA</td>
+                        <td class="select">
+                            {% if type == 0 %}
+                            x
+                            {% endif %}
+                        </td>
+                        <td class="consult">CITA CONTROL</td>
+                        <td class="select">
+                            {% if type == 1 %}
+                            x
+                            {% endif %}
+                        </td>
+                        <td class="consult">VACUNA/DESPARASITACIÓN</td>
+                        <td class="select">
+                            {% if type == 2 %}
+                            x
+                            {% endif %}
+                        </td>
+                        <td class="consult">OTRO</td>
+                        <td class="select">
+                            {% if type == 3 %}
+                            x
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </header>
+        </div>
+        <div class="anamnesis">
+            <h3 class="label-resp">RESPUESTA DEL CLIENTE:</h3>
+            <div class="free-space">
+                {% if history == "" %}
+                Anamnesis:{{anamnesis}}
+                {% else %}
+                Historia clínica:{{history}}<br>Anamnesis:{{anamnesis}}
+                {% endif %}
+            </div>
+        </div>
+        <div class="EFG">
+            <table class="constants">
+                <tr>
+                    <td class="constant">1.- EDO MENTAL</td>
+                    <td class="free">{{emental}}</td>
+                    <td class="constant">6.- RT</td>
+                    <td class="free">{{rt}}</td>
+                    <td class="constant">11.- % HIDRATACION</td>
+                    <td class="free">{{hidra}}</td>
+                    <td class="constant">16. LINFONODOS</td>
+                    <td class="free">{{linfo}}</td>
+                    <td class="constant">I/R</td>
+                </tr>
+                <tr>
+                    <td class="constant">2.- PESO</td>
+                    <td class="free">{{weight}}</td>
+                    <td class="constant">7.- RD</td>
+                    <td class="free">{{rd}}</td>
+                    <td class="constant">12.- A.C. PULMONAR</td>
+                    <td class="free">{{apulmo}}</td>
+                    <td class="constant"></td>
+                    <td class="free"></td>
+                    <td class="constant"></td>
+                </tr>
+                <tr>
+                    <td class="constant">3.- C/C</td>
+                    <td class="free">{{cc}}</td>
+                    <td class="constant">8.- F.CARDIACA</td>
+                    <td class="free">{{fc}}</td>
+                    <td class="constant">13.- PAL. PER.</td>
+                    <td class="free"></td>
+                    <td class="constant"></td>
+                    <td class="free"></td>
+                    <td class="constant"></td>
+                </tr>
+                <tr>
+                    <td class="constant">4.- MUCOSAS</td>
+                    <td class="free">{{muco}}</td>
+                    <td class="constant">9.- F. RESPIRATORIA</td>
+                    <td class="free">{{fr}}</td>
+                    <td class="constant">14.- PALP. ABD.</td>
+                    <td class="free">{{pabd}}</td>
+                    <td class="constant"></td>
+                    <td class="free"></td>
+                    <td class="constant"></td>
+                </tr>
+                <tr>
+                    <td class="constant">5.- TLLC</td>
+                    <td class="free">{{tllc}}</td>
+                    <td class="constant">10.- PULSO A.</td>
+                    <td class="free"></td>
+                    <td class="constant">15.- T°</td>
+                    <td class="free">{{tc}}</td>
+                    <td class="constant">OTRO</td>
+                    <td class="free"></td>
+                    <td class="constant"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="notes">
+            <h2 id="label-note">NOTAS:</h2>
+            <p class="note-text">{{notes}}</p>
+        </div>
+        <div class="next-info">
+            <table class="next">
+                <tr class="pro vis">
+                    <td class="pro">PROX. CITA</td>
+                    <td class="space">{{next}}</td>
+                </tr>
+                <tr class="motiv">
+                    <td class="pro">MOTIVO</td>
+                    <td class="space">{{motive}}</td>
+                </tr>
+                <tr class="cost">
+                    <td class="pro">COSTO</td>
+                    <td class="space">{{cost}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
