@@ -261,7 +261,7 @@ class Consult_View(QMainWindow):
         self.formLayout_14.setWidget(0, QFormLayout.ItemRole.FieldRole, self.label_age)
 
         self.widget29 = QWidget(self.EFG)
-        self.widget29.setGeometry(QRect(240, 50, 138, 19))
+        self.widget29.setGeometry(QRect(200, 50, 138, 19))
         self.formLayout_30 = QFormLayout(self.widget29)
         self.formLayout_30.setContentsMargins(0, 0, 0, 0)
         self.label_29 = QLabel("Especie:", self.widget29)
@@ -454,7 +454,7 @@ class Consult_View(QMainWindow):
         data = {
                 "date":self.date.text().replace("/","-").replace(" ", "_"),
                 "type":self.type_consult,
-                "name":self.label_patient.text(),
+                "patient":self.label_patient.text(),
                 "owner": self.owner,
                 "age":self.label_age.text(),
                 "weight": self.weight.text(),

@@ -7,19 +7,67 @@ from warning import Warning
 class Consult():
 	def __init__(self, data):
 		self.created = data["date"].replace(":","")
+		self.data = data 
+		self.setData()
+		patient = data["patient"]
 		owner = data["owner"]
-		name = data["name"]
-		self.data = data
-		self.name = f"{name}_{owner}_{self.created}"
+		self.filename = f"{patient}_{owner}_{self.created}"
 		print(f"consult object created at: {self.created}")
 
-	def setData(self, data):
-		pass  
-
+	def setData(self):
+		self.data["type"] = self.setTypeConsult(self.data["type"]),
+		self.data["cost"] = self.findWords()
+    
+	def setTypeConsult(self, type):
+		types = {
+                "Consulta general":0,
+                "Cita control":1,
+                "Entrega de resultados":2,
+                "Otro":3
+        }
+		return types[type]
+    
+	def findWords(self):
+		price = ""
+		control_cite = ["cita control", "control", "seguimiento"]
+		general_cite = ["consulta general", "primera consulta", "primera visita", "consulta"]
+		desparasitation_cite = ["desparasitación interna", "desparasitante", "desparasitación", "desparasitacion"]
+		laboratories = ["hemograma", "biometria hematica"]
+		print("entered in findwords")
+		try:
+			for word in self.data["motive"].split("+"):
+				word = word.rstrip().lstrip()        
+				#print(self.motive)
+				if price != "": price+=(" + ")
+				if word in control_cite: price+=("$300")
+				if word in general_cite: price+=("$380")
+				if word in desparasitation_cite: price += self.desparasitation_price()
+				if word in laboratories: price+=("$400")
+		except Exception as e:
+			print("Error:", e)
+		return price 
+    
+	def desparasitation_price(self):
+		if self.data["species"] == "Felino":
+			return "($154)"
+		weight = float(self.data["weight"].replace("kg", "").replace(" ",""))
+		if weight < 5:
+			return "($155)"
+		if weight >= 5 and weight <10:
+			return "($188)"
+		if weight >= 10 and weight <15:
+			return "($220)"
+		if weight >= 15 and weight <20:
+			return "($252.5)"
+		if weight >= 20 and weight <30:
+			return "($253)"
+		if weight >= 30 and weight <40:
+			return "($318)" 
+                    
 	def saveLocally(self):
 		try:
-			print(f"name of file: {self.name}.json")
-			with open(f"printer/consults/{self.name}.json", 'w') as file:
+			print(f"name of file: {self.filename}.json")
+			with open(f"printer/consults/{self.filename}.json", 'w') as file:
 				file.write(json.dumps(self.data))
 				print("saved locally")
 		except Exception as e:
@@ -38,24 +86,19 @@ class Consult():
 				print("entered to modified1")
 				print("writable: ", cache.writable())
 				print("readable: ", cache.readable())
-				cache.write(self.name+'\n')
+				cache.write(self.filename+'\n')
 				print("file writed")
 				print("cache list modified")
 		except Exception as e:
 			with open("consults_cache.txt", "w") as cache:
-				cache.write(self.name+'\n')
+				cache.write(self.filename+'\n')
 				print("cache list modified2")
 		finally:
 			print("consult object saved all info")
-			return self.name
-
-
+			return self.filename
 
 	def saveDB(self, data):
 		print("saved at database")
-
-	def getData(self):
-		pass  
 
 
 
