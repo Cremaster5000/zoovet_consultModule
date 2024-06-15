@@ -2,9 +2,12 @@
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
+import datetime
 from consult_view import Consult_View
 from warning import Warning
 import sys
+import os
+import subprocess
 
 
 class first_window(QMainWindow):
@@ -12,10 +15,17 @@ class first_window(QMainWindow):
         super().__init__()
         self.setupUi()
         self.show()
+
+    def getUpdate(self):
+        github = "https://www.github.com/Cremaster5000/zoovet_consultModule"
+        if datetime.date.today().weekday() == 0:
+            command = ["cd", os.getcwd(), "&&", "git pull", github]
+            subprocess.run()
         
     def setupUi(self):
         self.resize(250, 400)
         self.setMaximumSize(250, 400)
+        self.setWindowIcon(QIcon("naranjoso.ico"))
         self.setWindowTitle("Información básica")
         self.centralwidget = QWidget(self)
         

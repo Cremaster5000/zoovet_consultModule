@@ -20,6 +20,7 @@ class Consult_View(QMainWindow):
         self.owner = info[1]
 
     def setupUi(self, info):
+        self.setWindowIcon(QIcon("naranjoso.ico"))
         self.type_consult = info[8]
         
         self.setGeometry(QRect(0,0,639,650))
@@ -352,7 +353,7 @@ class Consult_View(QMainWindow):
 
         self.formLayout_20.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_samples)
 
-        self.label_20 = QLabel("Muestras:", self.widget20)
+        self.label_20 = QLabel("Hidratación:", self.widget20)
 
         self.formLayout_20.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_20)
 
@@ -477,7 +478,7 @@ class Consult_View(QMainWindow):
                 "clinicHistory": self.edit_history.toPlainText(),
                 "laboratory": self.editlaboratory.text(),
                 "dx": self.edit_diferencial.toPlainText(),
-                "samples": self.edit_samples.text(),
+                "hydra": self.edit_samples.text(),
                 "wound": self.edit_wound.text(),
                 "copro": self.edit_copro.text(),
                 "notes": self.edit_notes.toPlainText(),

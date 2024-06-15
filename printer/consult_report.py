@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import subprocess
-from platform import system
 from jinja2 import Environment, FileSystemLoader 
-from pyhtml2pdf import converter
 import json
+import win32print
 
 class Consult_report():
     def __init__(self, filename):
         self.file = filename
         self.setActiveUser()
+        self.setDirectory()
         self.createFolder()
 
     def createFolder(self):
@@ -19,6 +19,18 @@ class Consult_report():
 
     def setActiveUser(self):
         self.user = os.getlogin()
+
+    def setDirectory(self):
+        if os.path.exists("C:\\Users"):
+            self.users = "Users"
+        else:
+            self.users = "Usuarios"
+        documents = f"C:\\{self.users}\\{self.user}\\Documents"
+        if os.path.exists(documents):
+            self.documents = "Documents"
+        else: 
+            self.documents = "Documentos"
+        
         
     def getData(self):
         try:
@@ -36,6 +48,10 @@ class Consult_report():
             self.tc = data["tc"]
             self.rt = data["rt"]
             self.weight = data["weight"]
+            self.copro = data["copro"]
+            self.hydra = data["hydra"]
+            self.wound = data["wound"]
+            self.lab = data["laboratory"]
             self.rd = data["rd"]
             self.apulmo = data["auscPulm"]
             self.acard = data["auscCardiac"]
@@ -86,34 +102,20 @@ class Consult_report():
                                   emental = self.edo_mental, notes = self.notes, next = self.next, linfo = self.linfo, acard = self.acard,
                                   type = self.type[0], motive = self.motive, rt = self.rt, fc = self.fc, weight = self.weight,
                                   fr = self.fr, rd = self.rd, apulmo = self.apulmo, pabd = self.pabd, cost = self.cost,
-                                  history = self.history)
+                                  history = self.history, copro = self.copro, wound = self.wound, lab = self.lab, hydra = self.hydra)
         with open(f"printer\\reports\\{self.file}.html", "w", encoding="utf-8") as test:
             test.write(content)
             print("created report html")
 
     def htmlToPDF(self):
         html = os.path.abspath(f"printer\\reports\\{self.file}.html")
-        pdf = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
+        pdf = f"C:\\{self.users}\\{self.user}\\{self.documents}\\Consultas\\{self.file}\\{self.file}.pdf"
         print(pdf)
         edge_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
         command = [edge_path, "--headless", "--disable-gpu", "--print-to-pdf", f"--print-to-pdf={pdf}", html]
         result = subprocess.run(command, capture_output=True, text=True, check=True)
-
-    def htmlToPDF2(self):
-        path_wkhtmltopdf = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
-        html_path = os.path.abspath(f"printer\\reports\\{self.file}.html")
-        print(html_path)
-        pdf_path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
-        command = [path_wkhtmltopdf, "--enable-local-file-access", html_path, pdf_path]
-        try:
-            result = subprocess.run(command, capture_output=True, text=True)
-            print("resultado: ",result.stdout)
-            print("error: ",result.stderr)
-            print("file created:", os.path.exists(pdf_path))
-        except Exception as e:
-            print("Error: ", e)
                     
     def openToPrint(self):
-        path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
+        path = f"C:\\{self.users}\\{self.user}\\{self.documents}\\Consultas\\{self.file}\\{self.file}.pdf"
         os.startfile(path)
 

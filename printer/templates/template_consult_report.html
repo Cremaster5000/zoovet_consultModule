@@ -46,9 +46,10 @@
             <h3 class="label-resp">RESPUESTA DEL CLIENTE:</h3>
             <div class="free-space">
                 {% if history == "" %}
-                Anamnesis:{{anamnesis}}
+                Anamnesis:  {{anamnesis}}
+                <br><br>
                 {% else %}
-                Historia clínica:{{history}}<br>Anamnesis:{{anamnesis}}
+                Historia clínica:  {{history}}<br><br> Anamnesis:  {{anamnesis}}
                 {% endif %}
             </div>
         </div>
@@ -60,10 +61,9 @@
                     <td class="constant">6.- RT</td>
                     <td class="free">{{rt}}</td>
                     <td class="constant">11.- % HIDRATACION</td>
-                    <td class="free">{{hidra}}</td>
+                    <td class="free">{{hydra}}</td>
                     <td class="constant">16. LINFONODOS</td>
-                    <td class="free">{{linfo}}</td>
-                    <td class="constant">I/R</td>
+                    <td class="free">{{linfo}}</td>                    
                 </tr>
                 <tr>
                     <td class="constant">2.- PESO</td>
@@ -72,9 +72,8 @@
                     <td class="free">{{rd}}</td>
                     <td class="constant">12.- A.C. PULMONAR</td>
                     <td class="free">{{apulmo}}</td>
-                    <td class="constant"></td>
-                    <td class="free"></td>
-                    <td class="constant"></td>
+                    <td class="constant">17.- COPRO</td>
+                    <td class="free">{{copro}}</td>
                 </tr>
                 <tr>
                     <td class="constant">3.- C/C</td>
@@ -83,9 +82,8 @@
                     <td class="free">{{fc}}</td>
                     <td class="constant">13.- AUSC. CARD.</td>
                     <td class="free">{{acard}}</td>
-                    <td class="constant"></td>
-                    <td class="free"></td>
-                    <td class="constant"></td>
+                    <td class="constant">18.- LABORATORIO</td>
+                    <td class="free">{{lab}}</td>                    
                 </tr>
                 <tr>
                     <td class="constant">4.- MUCOSAS</td>
@@ -95,8 +93,7 @@
                     <td class="constant">14.- PALP. ABD.</td>
                     <td class="free">{{pabd}}</td>
                     <td class="constant"></td>
-                    <td class="free"></td>
-                    <td class="constant"></td>
+                    <td class="free"></td>                    
                 </tr>
                 <tr>
                     <td class="constant">5.- TLLC</td>
@@ -106,8 +103,7 @@
                     <td class="constant">15.- T°</td>
                     <td class="free">{{tc}}</td>
                     <td class="constant">OTRO</td>
-                    <td class="free"></td>
-                    <td class="constant"></td>
+                    <td class="free"></td>                    
                 </tr>
             </table>
         </div>
