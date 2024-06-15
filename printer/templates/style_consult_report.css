@@ -79,7 +79,7 @@ body{
 	.free-space{
 		font-size: 11pt;
 		text-justify: auto;
-		indent: 4pt;
+		text-indent: 4pt;
 	}
 }
 .EFG{
@@ -97,7 +97,7 @@ body{
 			font-size: 8pt;
 			width: 2.1rem;
 			text-wrap: nowrap;
-			indent: 3px;
+			text-indent: 3px;
 		}
 		.free{
 			border:1px solid black;
@@ -131,7 +131,7 @@ body{
 		font-size: 10pt;
 		.pro{
 			border: 1px solid black;
-			indent: ;
+			
 		}
 		.space{
 			width: 80%;

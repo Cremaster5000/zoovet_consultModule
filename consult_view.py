@@ -23,7 +23,7 @@ class Consult_View(QMainWindow):
         self.type_consult = info[8]
         
         self.setGeometry(QRect(0,0,639,650))
-        #self.setMaximumSize(639, 650)
+        self.setMaximumSize(639, 650)
         self.setWindowTitle("Consulta")
         self.centralwidget = QWidget(self)
         self.tabWidget = QTabWidget(self.centralwidget)

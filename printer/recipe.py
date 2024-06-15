@@ -10,28 +10,29 @@ class Recipe():
     def __init__(self, filename):
         print("created recipe")
         self.file = filename
-        self.setSlash
-        
-    def setSlash(self):
-        systemOs = os.system()
-        if systemOs == "Windows":
-            self.slash = '\\'
-        elif systemOs == "Linux":
-            self.slash = '/'
+        self.setUser()
+        self.createFolder()
+
+    def setUser(self):
+        self.user = os.getlogin()
+
+    def createFolder(self):
+        self.folder_path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}"
+        if not os.path.exists(self.folder_path):
+            os.mkdir(self.folder_path)
 
     def getData(self):
         print("entered to getData")
         try:
-            with open(f"printer{self.slash}consults{self.slash}{self.file}.json", "r") as consult:
+            with open(f"printer\\consults\\{self.file}.json", "r") as consult:
                 data = json.loads(consult.read())
             self.date = self.transformDate(data["date"][0:-6])
             self.type = data["type"]
-            self.anamnesis = data["anamnesis"]
             self.patient = data["patient"]
             self.owner = data["owner"]                        
             self.weight = data["weight"]
             self.dx = data["dx"]
-            self.tx = data["tx"]
+            self.tx = data["tx"].replace("\n", "<br>")
             self.next = self.transformDate(data["nextVisit"])
             self.motive = data["motive"]
             self.cost = data["cost"]
@@ -65,32 +66,28 @@ class Recipe():
         return spanish[month]
     
     def createHtml(self):
-        
-        environment = Environment(loader=FileSystemLoader(f"printer{self.slash}templates{self.slash}"))
+        css_path = os.path.abspath("printer\\templates\\style_recipe.css")
+        environment = Environment(loader=FileSystemLoader(f"printer\\templates\\"))
         template = environment.get_template("template_recipe.html")        
-        content = template.render(date = self.date, patient = self.patient,
+        content = template.render(css_path=css_path, date = self.date, patient = self.patient,
                                   propietary = self.owner, weight = self.weight,
                                   dx = self.dx, tx = self.tx, next_visit = self.next,
                                   motive = self.motive, cost = self.cost)
-        with open(f"printer{self.slash}html{self.slash}{self.file}.html", "w", encoding="utf-8") as test:
+        with open(f"printer\\html\\receta_{self.file}.html", "w", encoding="utf-8") as test:
             test.write(content)
         print("created recipe on html")
 
     def htmlToPDF(self):
-        path = os.path.abspath(f'printer{self.slash}html{self.slash}{self.file}.html')
-        converter.convert(f"file:{self.slash}{self.slash}{self.slash}{path}", f"printer{self.slash}pdf{self.slash}{self.file}.pdf", print_options={"marginTop": 0,
-                                                                                    "marginLeft":0,
-                                                                                    "marginRight":0,
-                                                                                    "marginBottom":0})
-        print("created pdf from html")
+        html = os.path.abspath(f"printer\\html\\receta_{self.file}.html")
+        pdf = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\receta_{self.file}.pdf"
+        print(pdf)
+        edge_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+        command = [edge_path, "--headless", "--no-pdf-header-footer", "--disable-gpu", "--print-to-pdf", f"--print-to-pdf={pdf}", html]
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
         
     def openToPrint(self):
-        path = os.path.abspath(f"printer{self.slash}pdf{self.slash}{self.file}.pdf")
-        systemOs = platform.system()
-        if systemOs == "Linux":
-            subprocess.Popen(["evince", path])
-        elif systemOs == "Windows":
-            os.startfile(path)
+        path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\receta_{self.file}.pdf"
+        os.startfile(path)
 
     def printRecipe(self):
         self.getData()

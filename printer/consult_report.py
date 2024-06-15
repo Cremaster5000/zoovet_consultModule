@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import subprocess
 from platform import system
@@ -8,21 +9,24 @@ import json
 class Consult_report():
     def __init__(self, filename):
         self.file = filename
-        self.setSlash()
-        
-    def setSlash(self):
-        if system() == "Windows":
-            self.slash = '\\'
-        elif system() == "Linux":
-            self.slash = '/'
+        self.setActiveUser()
+        self.createFolder()
+
+    def createFolder(self):
+        self.folder_path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}"
+        if not os.path.exists(self.folder_path):
+            os.mkdir(self.folder_path)
+
+    def setActiveUser(self):
+        self.user = os.getlogin()
         
     def getData(self):
         try:
-            with open(f"printer{self.slash}consults{self.slash}{self.file}.json", "r") as consult:
+            with open(f"printer\\consults\\{self.file}.json", "r") as consult:
                 data = json.loads(consult.read())
             self.date = self.transformDate(data["date"][0:-6])
             self.type = data["type"]
-            self.anamnesis = data["anamnesis"]
+            self.anamnesis = data["anamnesis"].replace("\n", "<br>")
             self.patient = data["patient"]
             self.edo_mental = data["mental"]
             self.linfo = data["linfonode"]
@@ -36,8 +40,8 @@ class Consult_report():
             self.apulmo = data["auscPulm"]
             self.acard = data["auscCardiac"]
             self.pabd = data["abdPalpat"]
-            self.history = data["clinicHistory"]
-            self.notes = data["notes"]
+            self.history = data["clinicHistory"].replace("\n", "<br>")
+            self.notes = data["notes"].replace("\n", "<br>")
             self.next = self.transformDate(data["nextVisit"])
             self.motive = data["motive"]
             self.cost = data["cost"]
@@ -68,12 +72,6 @@ class Consult_report():
         return spanish[month]
         
     def printReport(self):
-        if not os.path.exists(f"..{self.slash}{self.file}/"):
-            #agregar creacion de carpeta contenedora por consulta
-            os.mkdir(self.file)
-        if os.path.exists(f"{self.file}.html"):
-            self.htmlToPDF()
-            self.openToPrint()
         self.getData()
         self.createHtml()
         self.htmlToPDF()
@@ -81,32 +79,41 @@ class Consult_report():
  
     def createHtml(self):
         print("entered to create report html")
-        environment = Environment(loader=FileSystemLoader(f"printer{self.slash}templates{self.slash}"))
+        css_path = os.path.abspath("printer\\templates\\style_consult_report.css")
+        environment = Environment(loader=FileSystemLoader(f"printer\\templates\\"))
         template = environment.get_template("template_consult_report.html")        
-        content = template.render(date = self.date, patient = self.patient, anamnesis = self.anamnesis, tc = self.tc, cc = self.cc,
+        content = template.render(css_path=css_path, date = self.date, patient = self.patient, anamnesis = self.anamnesis, tc = self.tc, cc = self.cc,
                                   emental = self.edo_mental, notes = self.notes, next = self.next, linfo = self.linfo, acard = self.acard,
                                   type = self.type[0], motive = self.motive, rt = self.rt, fc = self.fc, weight = self.weight,
                                   fr = self.fr, rd = self.rd, apulmo = self.apulmo, pabd = self.pabd, cost = self.cost,
                                   history = self.history)
-        with open(f"printer{self.slash}reports{self.slash}{self.file}.html", "w", encoding="utf-8") as test:
+        with open(f"printer\\reports\\{self.file}.html", "w", encoding="utf-8") as test:
             test.write(content)
             print("created report html")
-        
+
     def htmlToPDF(self):
+        html = os.path.abspath(f"printer\\reports\\{self.file}.html")
+        pdf = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
+        print(pdf)
+        edge_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+        command = [edge_path, "--headless", "--disable-gpu", "--print-to-pdf", f"--print-to-pdf={pdf}", html]
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+
+    def htmlToPDF2(self):
+        path_wkhtmltopdf = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
+        html_path = os.path.abspath(f"printer\\reports\\{self.file}.html")
+        print(html_path)
+        pdf_path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
+        command = [path_wkhtmltopdf, "--enable-local-file-access", html_path, pdf_path]
         try:
-            print("Entered to html to pdf")
-            path = os.path.abspath(f'printer{self.slash}reports{self.slash}{self.file}.html')
-            print(path)
-            converter.convert(f"file:{self.slash}{self.slash}{self.slash}{path}", f"printer{self.slash}reports{self.slash}{self.file}.pdf", print_options={"marginTop": 0,
-                                                                                        "marginLeft":0,
-                                                                                        "marginRight":0,
-                                                                                        "marginBottom":0})
+            result = subprocess.run(command, capture_output=True, text=True)
+            print("resultado: ",result.stdout)
+            print("error: ",result.stderr)
+            print("file created:", os.path.exists(pdf_path))
         except Exception as e:
             print("Error: ", e)
                     
     def openToPrint(self):
-        path = os.path.abspath(f"printer{self.slash}reports{self.slash}{self.file}.pdf")
-        if system() == "Windows":
-            os.startfile(path)
-        elif system() == "Linux":
-            subprocess.Popen(["evince", path])
+        path = f"C:\\Users\\{self.user}\\Documents\\Consultas\\{self.file}\\{self.file}.pdf"
+        os.startfile(path)
+

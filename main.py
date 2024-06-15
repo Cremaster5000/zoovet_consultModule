@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -15,6 +15,7 @@ class first_window(QMainWindow):
         
     def setupUi(self):
         self.resize(250, 400)
+        self.setMaximumSize(250, 400)
         self.setWindowTitle("Información básica")
         self.centralwidget = QWidget(self)
         

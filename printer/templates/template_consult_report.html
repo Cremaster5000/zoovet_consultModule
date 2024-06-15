@@ -4,9 +4,9 @@
     <meta charset = "UTF-8">
     <meta http-equiv="X-UA-Compatible" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../templates/style_consult_report.css" type="text/css">
+    <link rel="stylesheet" href="{{css_path}}" type="text/css">
 </head>
-<body>
+<body >
     <div class="container">
         <div class="header">
             <header class="principal-info">
@@ -15,7 +15,7 @@
                 <table class="type-consult">
                     <tr class ="principal-row">
                         <td class="consult">CONSULTA</td>
-                        <td class="select">
+                        <td class="select"  >
                             {% if type == 0 %}
                             x
                             {% endif %}
@@ -33,7 +33,7 @@
                             {% endif %}
                         </td>
                         <td class="consult">OTRO</td>
-                        <td class="select">
+                        <td class="select" >
                             {% if type == 3 %}
                             x
                             {% endif %}
