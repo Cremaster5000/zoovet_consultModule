@@ -29,6 +29,7 @@ class Warning(QMainWindow):
         self.setCentralWidget(self.central_widget)
         self.butonOk.clicked.connect(self.ok)
         
+        
     def ok(self):
         self.parent.setEnabled(True)
         self.close()
