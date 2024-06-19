@@ -20,7 +20,7 @@ class Consult_View(QMainWindow):
         self.owner = info[1]
 
     def setupUi(self, info):
-        self.setWindowIcon(QIcon("naranjoso.ico"))
+        self.setWindowIcon(QIcon("icon.ico"))
         self.type_consult = info[8]
         
         self.setGeometry(QRect(0,0,639,650))
