@@ -18,8 +18,8 @@ class first_window(QMainWindow):
         self.show()
 
     def getUpdate(self):
-        if datetime.date.today().day == 1:
-            self.updater = Updater()
+        if datetime.date.today().day == 19:
+            self.updater = Updater(self)
             self.updater.update()
         
     def setupUi(self):
