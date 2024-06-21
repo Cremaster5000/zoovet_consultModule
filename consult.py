@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from database_object import DatabaseObject
 from warning import Warning
+import os
 
 
 class Consult():
@@ -13,6 +14,19 @@ class Consult():
 		owner = data["owner"]
 		self.filename = f"{patient}_{owner}_{self.created}"
 		print(f"consult object created at: {self.created}")
+
+
+
+	def createFolderConsults(self):
+		folder = f"printer\\consults\\"
+		if not os.path.exists(os.path.abspath(folder)):
+			os.mkdir(os.path.abspath(folder))
+
+	def createFolderHtml(self):
+		folder = f"printer\\html\\"
+		if not os.path.exists(os.path.abspath(folder)):
+			os.mkdir(os.path.abspath(folder))
+		
 
 	def setData(self):
 		self.data["type"] = self.setTypeConsult(self.data["type"]),
@@ -81,18 +95,6 @@ class Consult():
 			self.warning = Warning(self, f"Error: {e}")
 			print(f"warning: {self.data} cant be saved")
 			return False
-		try: 
-			with open("consults_cache.txt", "a") as cache:
-				print("entered to modified1")
-				print("writable: ", cache.writable())
-				print("readable: ", cache.readable())
-				cache.write(self.filename+'\n')
-				print("file writed")
-				print("cache list modified")
-		except Exception as e:
-			with open("consults_cache.txt", "w") as cache:
-				cache.write(self.filename+'\n')
-				print("cache list modified2")
 		finally:
 			print("consult object saved all info")
 			return self.filename

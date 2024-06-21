@@ -14,7 +14,7 @@ class first_window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi()
-        self.getUpdate()
+        #self.getUpdate()
         self.show()
 
     def getUpdate(self):
@@ -148,7 +148,9 @@ class first_window(QMainWindow):
         self.setStatusBar(self.statusbar)
 
 
-
+    def new_consult(self):
+        self.setupUi()
+        self.setVisible(True)
 
     def cancel(self):
         self.close()
@@ -157,8 +159,8 @@ class first_window(QMainWindow):
         if self.edit_name.text() == "" or self.edit_owner.text() == "":
             self.warning = Warning(self, "Inserte nombre y propietario")
         else:
-            self.new_consult = Consult_View(self.package_info())
-            self.close()
+            self.new_consult_view = Consult_View(self.package_info(), self)
+            self.setVisible(False)
         
     def package_info(self):
         info = [

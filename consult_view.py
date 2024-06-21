@@ -3,7 +3,6 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 import datetime
-
 import sys
 from consult import Consult
 from printer.consult_report import Consult_report
@@ -12,12 +11,14 @@ from printer.recipe import Recipe
 
 class Consult_View(QMainWindow):
     
-    def __init__(self, info):
+    def __init__(self, info, main):
         super().__init__()
         self.time_creation = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
         self.setupUi(info)
         self.show()
         self.owner = info[1]
+        self.main = main
+        
 
     def setupUi(self, info):
         self.setWindowIcon(QIcon("icon.ico"))
@@ -309,6 +310,9 @@ class Consult_View(QMainWindow):
         self.tabWidget.addTab(self.EFG, "EFG")
         self.DX = QWidget()
         
+        self.buton_new = QPushButton("Nueva", self.DX)
+        self.buton_new.setGeometry(QRect(250, 540, 113, 25))
+        self.buton_new.clicked.connect(self.newConsult)
         self.buton_print = QPushButton("Imprimir receta", self.DX)
         self.buton_print.setGeometry(QRect(500, 540, 113, 25))
         self.buton_print.clicked.connect(self.printPrescription)
@@ -316,10 +320,10 @@ class Consult_View(QMainWindow):
         self.buton_cancel.setGeometry(QRect(50, 540, 89, 25))
         self.buton_cancel.clicked.connect(self.cancel)
         self.buton_save = QPushButton("Guardar", self.DX)
-        self.buton_save.setGeometry(QRect(195, 540, 89, 25))
+        self.buton_save.setGeometry(QRect(150, 540, 89, 25))
         self.buton_save.clicked.connect(self.saveData)
         self.buton_report = QPushButton("Reporte", self.DX)
-        self.buton_report.setGeometry(QRect(350, 540, 93, 25))
+        self.buton_report.setGeometry(QRect(380, 540, 93, 25))
         self.buton_report.clicked.connect(self.report)
         self.widget18 = QWidget(self.DX)
         self.widget18.setGeometry(QRect(370, 100, 241, 27))
@@ -487,6 +491,10 @@ class Consult_View(QMainWindow):
                 "tx": self.edit_Tx.toPlainText()
                 }
         return data
+
+    def newConsult(self):
+        self.main.new_consult()
+        self.close()
 
     def printPrescription(self):
         filename = self.saveData()
