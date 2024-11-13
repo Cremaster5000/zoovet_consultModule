@@ -22,14 +22,14 @@ class Consult():
 		types = {
                 "Consulta general":0,
                 "Cita control":1,
-                "Entrega de resultados":2,
+                "Vacuna/desparasitación":2,
                 "Otro":3
         }
 		return types[type]
     
 	def findWords(self):
 		price = ""
-		control_cite = ["cita control", "control", "seguimiento"]
+		control_cite = ["cita control", "control", "seguimiento", "cc"]
 		general_cite = ["consulta general", "primera consulta", "primera visita", "consulta"]
 		desparasitation_cite = ["desparasitación interna", "desparasitante", "desparasitación", "desparasitacion"]
 		laboratories = ["hemograma", "biometria hematica"]

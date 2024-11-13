@@ -11,6 +11,7 @@
         <div class="header">
             <header class="principal-info">
                 <h2 id="title">ANAMNESIS ¡MOTIVO DE CONSULTA! #1</h2>
+                <h3 id="patient-info">Paciente: {{patient}} {{owner}}
                 <h3 id="label">FECHA: {{date}}</h3>
                 <table class="type-consult">
                     <tr class ="principal-row">
@@ -45,10 +46,11 @@
         <div class="anamnesis">
             <h3 class="label-resp">RESPUESTA DEL CLIENTE:</h3>
             <div class="free-space">
+                <br>
                 {% if history == "" %}
                 Anamnesis:{{anamnesis}}
                 {% else %}
-                Historia clínica:{{history}}<br>Anamnesis:{{anamnesis}}
+                Historia clínica:{{history}}<br><br>Anamnesis:{{anamnesis}}
                 {% endif %}
             </div>
         </div>

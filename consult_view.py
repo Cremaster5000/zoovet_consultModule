@@ -12,12 +12,13 @@ from printer.recipe import Recipe
 
 class Consult_View(QMainWindow):
     
-    def __init__(self, info):
+    def __init__(self, info, main):
         super().__init__()
         self.time_creation = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
         self.setupUi(info)
         self.show()
         self.owner = info[1]
+        self.main = main
 
     def setupUi(self, info):
         self.type_consult = info[8]
@@ -96,6 +97,7 @@ class Consult_View(QMainWindow):
         self.edit_cc.addItem("3/5")
         self.edit_cc.addItem("4/5")
         self.edit_cc.addItem("5/5")
+        self.edit_cc.setCurrentIndex(2)
         self.formlayout_29.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_28)
         self.formlayout_29.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_cc)
 
@@ -120,8 +122,8 @@ class Consult_View(QMainWindow):
         self.formLayout_5.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_6)
 
         self.combobox_rt = QComboBox(self.widget5)
-        self.combobox_rt.addItem("Positivo")
         self.combobox_rt.addItem("Negativo")
+        self.combobox_rt.addItem("Positivo")
 
         self.formLayout_5.setWidget(0, QFormLayout.ItemRole.FieldRole, self.combobox_rt)
 
@@ -308,6 +310,9 @@ class Consult_View(QMainWindow):
         self.tabWidget.addTab(self.EFG, "EFG")
         self.DX = QWidget()
         
+        self.buton_new = QPushButton("Nueva", self.DX)
+        self.buton_new.setGeometry(QRect(250, 540, 113, 25))
+        self.buton_new.clicked.connect(self.newConsult)
         self.buton_print = QPushButton("Imprimir receta", self.DX)
         self.buton_print.setGeometry(QRect(500, 540, 113, 25))
         self.buton_print.clicked.connect(self.printPrescription)
@@ -315,10 +320,10 @@ class Consult_View(QMainWindow):
         self.buton_cancel.setGeometry(QRect(50, 540, 89, 25))
         self.buton_cancel.clicked.connect(self.cancel)
         self.buton_save = QPushButton("Guardar", self.DX)
-        self.buton_save.setGeometry(QRect(195, 540, 89, 25))
+        self.buton_save.setGeometry(QRect(150, 540, 89, 25))
         self.buton_save.clicked.connect(self.saveData)
         self.buton_report = QPushButton("Reporte", self.DX)
-        self.buton_report.setGeometry(QRect(350, 540, 93, 25))
+        self.buton_report.setGeometry(QRect(380, 540, 93, 25))
         self.buton_report.clicked.connect(self.report)
         self.widget18 = QWidget(self.DX)
         self.widget18.setGeometry(QRect(370, 100, 241, 27))
@@ -497,6 +502,10 @@ class Consult_View(QMainWindow):
         filename = self.saveData()        
         report = Consult_report(filename)
         report.printReport()
+        
+    def newConsult(self):
+        self.main.new_consult()
+        self.close()
     
     
 if __name__ == '__main__':

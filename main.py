@@ -38,16 +38,7 @@ class first_window(QMainWindow):
         self.formLayout_7.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_name)
         self.verticalLayout.addLayout(self.formLayout_7)
         
-        self.combobox_type_consult = QComboBox(self.widget)
-        self.combobox_type_consult.addItem("Consulta general")
-        self.combobox_type_consult.addItem("Cita control")
-        self.combobox_type_consult.addItem("Entrega de resultados")
-        self.combobox_type_consult.addItem("Otro")
-        self.widget2 = QWidget(self)
-        self.formLayout_8 = QFormLayout(self.widget2)
-        self.widget2.setGeometry(QRect(20, 285, 200, 40))
-        self.formLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.formLayout_8.setWidget(0, QFormLayout.ItemRole.FieldRole, self.combobox_type_consult)
+       
         
         self.formLayout_6 = QFormLayout()
         self.label_owner = QLabel("Familia:",self.widget)
@@ -56,7 +47,7 @@ class first_window(QMainWindow):
         self.formLayout_6.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_owner)
 
         self.edit_owner = QLineEdit(self.widget)
-
+        
         self.formLayout_6.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_owner)
 
 
@@ -103,17 +94,19 @@ class first_window(QMainWindow):
         self.verticalLayout.addLayout(self.formLayout_3)
 
         self.formLayout_2 = QFormLayout()
-        self.label_breed = QLabel("Raza:", self.widget)
-        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_breed)
-        self.edit_breed = QLineEdit(self.widget)
-        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.edit_breed)
-        
         self.label_species = QLabel("Especie:", self.widget)
         self.edit_species = QComboBox(self.widget)
         self.edit_species.addItem("Canino")
         self.edit_species.addItem("Felino")
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_species)
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_species)
+
+        
+        
+        self.label_breed = QLabel("Raza:", self.widget)
+        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_breed)
+        self.edit_breed = QLineEdit(self.widget)
+        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.edit_breed)
 
         self.verticalLayout.addLayout(self.formLayout_2)
 
@@ -126,6 +119,16 @@ class first_window(QMainWindow):
 
         self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.edit_age)
 
+        self.combobox_type_consult = QComboBox(self.widget)
+        self.combobox_type_consult.addItem("Consulta general")
+        self.combobox_type_consult.addItem("Cita control")
+        self.combobox_type_consult.addItem("Vacuna/desparasitación")
+        self.combobox_type_consult.addItem("Otro")
+        self.widget2 = QWidget(self)
+        self.formLayout_8 = QFormLayout(self.widget2)
+        self.widget2.setGeometry(QRect(20, 285, 200, 40))
+        self.formLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.formLayout_8.setWidget(0, QFormLayout.ItemRole.FieldRole, self.combobox_type_consult)
 
         self.verticalLayout.addLayout(self.formLayout)
 
@@ -137,7 +140,9 @@ class first_window(QMainWindow):
         self.setStatusBar(self.statusbar)
 
 
-
+    def new_consult(self):
+        self.setupUi()
+        self.setVisible(True)
 
     def cancel(self):
         self.close()
@@ -146,12 +151,12 @@ class first_window(QMainWindow):
         if self.edit_name.text() == "" or self.edit_owner.text() == "":
             self.warning = Warning(self, "Inserte nombre y propietario")
         else:
-            self.new_consult = Consult_View(self.package_info())
-            self.close()
+            self.new_consult_view = Consult_View(self.package_info(), self)
+            self.setVisible(False)
         
     def package_info(self):
         info = [
-            self.edit_name.text(),
+            self.edit_name.text().replace('/', "_"),
             self.edit_owner.text(),
             self.edit_sex.currentText(),
             self.edit_age.text(),

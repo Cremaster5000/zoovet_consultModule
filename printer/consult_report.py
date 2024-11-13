@@ -8,22 +8,22 @@ import json
 class Consult_report():
     def __init__(self, filename):
         self.file = filename
-        self.setSlash()
+        self.createDirectory()
         
-    def setSlash(self):
-        if system() == "Windows":
-            self.slash = '\\'
-        elif system() == "Linux":
-            self.slash = '/'
+        
+    def createDirectory(self):
+        if not os.path.exists(f"/home/lalo/Consultas/{self.file}"):
+            os.mkdir(f"/home/lalo/Consultas/{self.file}")
         
     def getData(self):
         try:
-            with open(f"printer{self.slash}consults{self.slash}{self.file}.json", "r") as consult:
+            with open(f"printer/consults/{self.file}.json", "r") as consult:
                 data = json.loads(consult.read())
             self.date = self.transformDate(data["date"][0:-6])
             self.type = data["type"]
             self.anamnesis = data["anamnesis"]
             self.patient = data["patient"]
+            self.owner = data["owner"]
             self.edo_mental = data["mental"]
             self.linfo = data["linfonode"]
             self.fc = data["fc"]
@@ -68,45 +68,56 @@ class Consult_report():
         return spanish[month]
         
     def printReport(self):
-        if not os.path.exists(f"..{self.slash}{self.file}/"):
-            #agregar creacion de carpeta contenedora por consulta
-            os.mkdir(self.file)
-        if os.path.exists(f"{self.file}.html"):
-            self.htmlToPDF()
-            self.openToPrint()
         self.getData()
         self.createHtml()
-        self.htmlToPDF()
+        self.htmlToPDF_popen()
         self.openToPrint()
  
     def createHtml(self):
         print("entered to create report html")
-        environment = Environment(loader=FileSystemLoader(f"printer{self.slash}templates{self.slash}"))
+        environment = Environment(loader=FileSystemLoader(f"printer/templates/"))
         template = environment.get_template("template_consult_report.html")        
-        content = template.render(date = self.date, patient = self.patient, anamnesis = self.anamnesis, tc = self.tc, cc = self.cc,
+        content = template.render(date = self.date, patient = self.patient, owner = self.owner, anamnesis = self.anamnesis, tc = self.tc, cc = self.cc,
                                   emental = self.edo_mental, notes = self.notes, next = self.next, linfo = self.linfo, acard = self.acard,
                                   type = self.type[0], motive = self.motive, rt = self.rt, fc = self.fc, weight = self.weight,
                                   fr = self.fr, rd = self.rd, apulmo = self.apulmo, pabd = self.pabd, cost = self.cost,
                                   history = self.history)
-        with open(f"printer{self.slash}reports{self.slash}{self.file}.html", "w", encoding="utf-8") as test:
+        with open(f"printer/reports/{self.file}.html", "w", encoding="utf-8") as test:
             test.write(content)
             print("created report html")
         
     def htmlToPDF(self):
         try:
             print("Entered to html to pdf")
-            path = os.path.abspath(f'printer{self.slash}reports{self.slash}{self.file}.html')
+            path = os.path.abspath(f'printer/reports/{self.file}.html')
             print(path)
-            converter.convert(f"file:{self.slash}{self.slash}{self.slash}{path}", f"printer{self.slash}reports{self.slash}{self.file}.pdf", print_options={"marginTop": 0,
+            target = f"/home/lalo/Consultas/{self.file}/{self.file}.pdf"
+            converter.convert(f"file:///{path}", target, print_options={"marginTop": 0,
                                                                                         "marginLeft":0,
                                                                                         "marginRight":0,
                                                                                         "marginBottom":0})
+            print("created report in pdf")
         except Exception as e:
             print("Error: ", e)
+            
+    def htmlToPDF_popen(self):
+        pdf = f"/home/lalo/Consultas/{self.file}/{self.file}.pdf"
+        html = os.path.abspath(f"printer/reports/{self.file}.html")
+        command = ["google-chrome", "--headless", "--disable-gpu", "--print-to-pdf", f"--print-to-pdf={pdf}", html]
+        try:    
+            subprocess.check_call(command)
+            print("saved pdf")
+            os.wait()
+        except Exception as e:
+            subprocess.Popen(command)
                     
     def openToPrint(self):
-        path = os.path.abspath(f"printer{self.slash}reports{self.slash}{self.file}.pdf")
-        if system() == "Windows":
-            os.startfile(path)
-        elif system() == "Linux":
-            subprocess.Popen(["evince", path])
+        path = os.path.abspath(f"/home/lalo/Consultas/{self.file}/{self.file}.pdf")
+        subprocess.Popen(["evince", path])
+        
+
+        """_summary_
+        papi: no ha estado comiendo desd el sabado en la tarde, sin apetito
+        heces color gris oscuro verdoso, toma suero forzado, solo comio un poco de a/d
+        2.7 kg
+        """
